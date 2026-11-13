@@ -7,24 +7,30 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    env:
+      VCPKG_ROOT: ${{ github.workspace }}\vcpkg
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup CMake + Ninja
-        uses: lukka/get-cmake@latest
+      - name: Setup vcpkg
+        shell: pwsh
+        run: |
+          git clone --depth 1 https://github.com/microsoft/vcpkg.git "$env:VCPKG_ROOT"
+          & "$env:VCPKG_ROOT\bootstrap-vcpkg.bat"
 
-      - name: Setup vcpkg (pinned)
-        uses: lukka/run-vcpkg@v11
-        with:
-          vcpkgGitCommitId: 'e8bb74af4b0fae69f52e5b8ba17a5dd286abc0b9'
-          vcpkgDirectory: '${{ runner.workspace }}/vcpkg'
+      - name: Configure
+        shell: pwsh
+        run: |
+          cmake -B build -S . `
+            -DCMAKE_BUILD_TYPE=Release `
+            -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT\scripts\buildsystems\vcpkg.cmake" `
+            -DVCPKG_TARGET_TRIPLET=x64-windows-static-md
 
-      - name: Configure & Build
-        uses: lukka/run-cmake@v10
-        with:
-          configurePreset: 'release'
-          buildPreset: 'release'
+      - name: Build
+        shell: pwsh
+        run: |
+          cmake --build build --config Release
 
       - name: Upload DLL artifact
         uses: actions/upload-artifact@v4
@@ -33,7 +39,7 @@ jobs:
           path: build/release/*.dll
           if-no-files-found: error
 
-      - name: Upload full build (zip)
+      - name: Upload logs on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
