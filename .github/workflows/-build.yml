@@ -19,6 +19,16 @@ jobs:
           git clone --depth 1 https://github.com/microsoft/vcpkg.git "$env:VCPKG_ROOT"
           & "$env:VCPKG_ROOT\bootstrap-vcpkg.bat"
 
+      - name: Pin builtin-baseline to current vcpkg HEAD
+        shell: pwsh
+        run: |
+          $commit = git -C "$env:VCPKG_ROOT" rev-parse HEAD
+          Write-Host "vcpkg HEAD: $commit"
+          $manifest = Get-Content vcpkg.json -Raw | ConvertFrom-Json
+          $manifest | Add-Member -NotePropertyName builtin-baseline -NotePropertyValue $commit -Force
+          $manifest | ConvertTo-Json -Depth 10 | Set-Content vcpkg.json -Encoding utf8
+          Get-Content vcpkg.json
+
       - name: Configure
         shell: pwsh
         run: |
