@@ -1,0 +1,8 @@
+{
+  "name": "special-bar-arbiter",
+  "version-string": "0.1.0",
+  "description": "SKSE plugin: TrueHUD special bar arbiter (Peacemaker)",
+  "dependencies": [
+    "commonlibsse-ng"
+  ]
+}
