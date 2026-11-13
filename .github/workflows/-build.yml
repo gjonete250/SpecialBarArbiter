@@ -1,0 +1,41 @@
+name: Build SpecialBarArbiter
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup CMake + Ninja
+        uses: lukka/get-cmake@latest
+
+      - name: Setup vcpkg (pinned)
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgGitCommitId: 'e8bb74af4b0fae69f52e5b8ba17a5dd286abc0b9'
+          vcpkgDirectory: '${{ runner.workspace }}/vcpkg'
+
+      - name: Configure & Build
+        uses: lukka/run-cmake@v10
+        with:
+          configurePreset: 'release'
+          buildPreset: 'release'
+
+      - name: Upload DLL artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SpecialBarArbiter
+          path: build/release/*.dll
+          if-no-files-found: error
+
+      - name: Upload full build (zip)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: build/
