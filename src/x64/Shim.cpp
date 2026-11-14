@@ -12,9 +12,7 @@ namespace Arbiter
 
     SpecialBarShim::SpecialBarShim(TRUEHUD_API::IVTrueHUD4* a_real) :
         _real(a_real)
-    {
-        assert(_real);
-    }
+    {}
 
     SpecialBarShim* SpecialBarShim::GetSingleton()
     {

@@ -2,6 +2,7 @@
 
 // ---------- Стандартная библиотека (CommonLib ожидает их в предвключении) ----------
 #include <algorithm>
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>

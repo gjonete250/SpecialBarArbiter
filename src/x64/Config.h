@@ -1,5 +1,7 @@
 #pragma once
 
+#include "PCH.h"
+
 namespace Arbiter::Config
 {
     struct Settings

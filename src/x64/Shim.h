@@ -1,5 +1,10 @@
 #pragma once
 
+#include "PCH.h"
+
+// Типы API (APIResult, WidgetRemovalMode, BarColorType, WidgetBase...) используем без префикса
+using namespace TRUEHUD_API;
+
 namespace Arbiter
 {
     // Прозрачный посредник между клиентскими плагинами и настоящим TrueHUD API.

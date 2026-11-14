@@ -27,7 +27,7 @@ namespace Arbiter::Hook
             return nullptr;
         }
 
-        void* __declspec(noinline) Thunk_RequestPluginAPI(const TRUEHUD_API::InterfaceVersion a_version)
+        __declspec(noinline) void* Thunk_RequestPluginAPI(const TRUEHUD_API::InterfaceVersion a_version)
         {
             // Адрес возврата = точка вызова в DLL клиента (мы вошли сюда через jmp)
             const void* caller = _ReturnAddress();
@@ -39,7 +39,7 @@ namespace Arbiter::Hook
     void* CallOriginal(TRUEHUD_API::InterfaceVersion a_version)
     {
         // 1) выполняем сохранённые оригинальные байты в пещере...
-        void* result = reinterpret_cast<void* (*)(const InterfaceVersion)>(reinterpret_cast<void*>(g_cave))(a_version);
+        void* result = reinterpret_cast<void* (*)(TRUEHUD_API::InterfaceVersion)>(reinterpret_cast<void*>(g_cave))(a_version);
         // 2) ...и прыгаем обратно в конец перехваченного кода (jmp rel32 записан в пещере)
         return result;
     }

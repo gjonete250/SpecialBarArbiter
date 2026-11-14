@@ -1,5 +1,7 @@
 #pragma once
 
+#include "PCH.h"
+
 namespace Arbiter::Hook
 {
     // Устанавливает 14-байтовый перехват на экспорт RequestPluginAPI из TrueHUD.dll.
