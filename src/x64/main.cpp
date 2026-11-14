@@ -16,9 +16,9 @@ namespace
         spdlog::flush_on(spdlog::level::info);
     }
 
-    void MessageHandler(SKSE::MessagingInterface::Event* a_event)
+    void MessageHandler(SKSE::MessagingInterface::Message* a_msg)
     {
-        switch (a_event->type) {
+        switch (a_msg->type) {
         case SKSE::MessagingInterface::kPostLoad:
             // все SKSE-плагины уже загружены, экспорт TrueHUD доступен
             if (!Arbiter::Hook::Install()) {
@@ -34,10 +34,10 @@ namespace
     }
 }
 
-SKSEPluginLoad(const SKSE::LoadInfo* a_info)
+extern "C" [[maybe_unused]] __declspec(dllexport) bool SKSEPlugin_Load(SKSE::LoadInterface* a_intfc)
 {
     SetupLog();
-    SKSE::Init(a_info);
+    SKSE::Init(a_intfc);
 
     logger::info("Special Bar Arbiter v0.1 (Peacemaker) loading...");
     Arbiter::Config::Load();
@@ -45,4 +45,5 @@ SKSEPluginLoad(const SKSE::LoadInfo* a_info)
     SKSE::GetMessagingInterface()->RegisterListener(MessageHandler);
 
     logger::info("Special Bar Arbiter loaded.");
+    return true;
 }
