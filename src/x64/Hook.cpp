@@ -80,14 +80,14 @@ namespace Arbiter::Hook
         auto retAddr = target + HOOK_BYTES;
         auto jmpSite = reinterpret_cast<std::uintptr_t>(cave + HOOK_BYTES);
         auto rel     = static_cast<std::int32_t>(retAddr - (jmpSite + 5));
-        std::byte patch[5] = { std::byte{ 0xE9 }, std::byte(0), std::byte(0), std::byte(0), std::byte(0) };
+        std::byte patch[5] = { static_cast<std::byte>(0xE9), static_cast<std::byte>(0), static_cast<std::byte>(0), static_cast<std::byte>(0), static_cast<std::byte>(0) };
         std::memcpy(patch + 1, &rel, sizeof(rel));
         std::memcpy(cave + HOOK_BYTES, patch, 5);
 
         // патчим сам экспорт: FF 25 00 00 00 00 [8-байтовый адрес нашего Thunk]
-        std::byte hook[HOOK_BYTES] = { 0 };
-        hook[0] = std::byte{ 0xFF };
-        hook[1] = std::byte{ 0x25 };
+        std::byte hook[HOOK_BYTES] = {};  // все байты = 0
+        hook[0] = static_cast<std::byte>(0xFF);
+        hook[1] = static_cast<std::byte>(0x25);
         // hook[2..5] = 0 (rip+0)
         auto thunkAddr = reinterpret_cast<std::uint64_t>(&Thunk_RequestPluginAPI);
         std::memcpy(hook + 6, &thunkAddr, sizeof(thunkAddr));

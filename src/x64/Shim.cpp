@@ -14,7 +14,7 @@ namespace Arbiter
         _real(a_real)
     {}
 
-    SpecialBarShim* SpecialBarShim::GetSingleton()
+    SpecialBarShim*& SpecialBarShim::GetSingleton()
     {
         static SpecialBarShim* s = nullptr;
         return s;
@@ -291,7 +291,8 @@ namespace Arbiter
 
     void SpecialBarShim::DrawCapsule(const RE::NiPoint3& a_origin, float a_halfHeight, float a_radius, const RE::NiQuaternion& a_rotation, float a_duration, std::uint32_t a_color, float a_thickness) noexcept
     {
-        _real->DrawCapsule(a_origin, a_halfHeight, a_radius, a_rotation, a_duration, a_color, a_thickness);
+        // квалификатор нужен: IVTrueHUD4::DrawCapsule скрывает перегрузку базового класса
+        _real->IVTrueHUD3::DrawCapsule(a_origin, a_halfHeight, a_radius, a_rotation, a_duration, a_color, a_thickness);
     }
 
     bool SpecialBarShim::HasInfoBar(RE::ActorHandle a_actorHandle, bool a_bFloatingOnly) const noexcept

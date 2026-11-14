@@ -45,3 +45,6 @@
 
 // Совместимость: в NG логгер называется SKSE::log
 namespace logger = SKSE::log;
+
+// Для служебного файла порта (использует "..."sv)
+using namespace std::string_view_literals;

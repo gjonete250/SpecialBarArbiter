@@ -18,7 +18,7 @@ namespace Arbiter
         static void* Attach(void* a_realInterface, const void* a_callerReturnAddress,
                             TRUEHUD_API::InterfaceVersion a_version);
 
-        static SpecialBarShim* GetSingleton();
+        static SpecialBarShim*& GetSingleton();
 
         // IVTrueHUD1
         [[nodiscard]] unsigned long GetTrueHUDThreadId() const noexcept override;
