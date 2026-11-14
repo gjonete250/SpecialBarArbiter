@@ -1,6 +1,25 @@
 #pragma once
 
-// ---------- Win32 ----------
+// ---------- Стандартная библиотека (CommonLib ожидает их в предвключении) ----------
+#include <algorithm>
+#include <cstddef>
+#include <cstdint>
+#include <cstdio>
+#include <cstring>
+#include <filesystem>
+#include <functional>
+#include <map>
+#include <memory>
+#include <mutex>
+#include <optional>
+#include <span>
+#include <string>
+#include <string_view>
+#include <type_traits>
+#include <utility>
+#include <vector>
+
+// ---------- Win32 (ДО CommonLib: IMAGE_SCN_*, HANDLE и прочее) ----------
 #include <Windows.h>
 
 // ---------- spdlog ----------
@@ -22,3 +41,6 @@
 
 // ---------- TrueHUD API (скачивается при сборке) ----------
 #include "API/TrueHUDAPI.h"
+
+// Совместимость: в NG логгер называется SKSE::log
+namespace logger = SKSE::log;
