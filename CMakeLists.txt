@@ -16,7 +16,10 @@ add_commonlibsse_plugin(
 )
 
 target_compile_features(SpecialBarArbiter PRIVATE cxx_std_23)
-target_compile_options(SpecialBarArbiter PRIVATE /utf-8)
+target_compile_options(SpecialBarArbiter PRIVATE
+    /utf-8
+    "/FI${CMAKE_CURRENT_SOURCE_DIR}/src/x64/PCH.h"
+)
 target_include_directories(SpecialBarArbiter PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/x64
     ${CMAKE_CURRENT_SOURCE_DIR}/include
