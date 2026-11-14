@@ -291,8 +291,9 @@ namespace Arbiter
 
     void SpecialBarShim::DrawCapsule(const RE::NiPoint3& a_origin, float a_halfHeight, float a_radius, const RE::NiQuaternion& a_rotation, float a_duration, std::uint32_t a_color, float a_thickness) noexcept
     {
-        // квалификатор нужен: IVTrueHUD4::DrawCapsule скрывает перегрузку базового класса
-        _real->IVTrueHUD3::DrawCapsule(a_origin, a_halfHeight, a_radius, a_rotation, a_duration, a_color, a_thickness);
+        // вызов через базовый IVTrueHUD3: имя DrawCapsule в IVTrueHUD4 скрывает перегрузку базового класса,
+        // а квалифицированный вызов был бы НЕвиртуальным и упёрся в чисто виртуальную функцию
+        static_cast<TRUEHUD_API::IVTrueHUD3*>(_real)->DrawCapsule(a_origin, a_halfHeight, a_radius, a_rotation, a_duration, a_color, a_thickness);
     }
 
     bool SpecialBarShim::HasInfoBar(RE::ActorHandle a_actorHandle, bool a_bFloatingOnly) const noexcept
