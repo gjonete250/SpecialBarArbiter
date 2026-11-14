@@ -39,7 +39,7 @@ extern "C" [[maybe_unused]] __declspec(dllexport) bool SKSEPlugin_Load(SKSE::Loa
     SetupLog();
     SKSE::Init(a_intfc);
 
-    logger::info("Special Bar Arbiter v0.1 (Peacemaker) loading...");
+    logger::info("Special Bar Arbiter v0.1.1 (Peacemaker) loading...");
     Arbiter::Config::Load();
 
     SKSE::GetMessagingInterface()->RegisterListener(MessageHandler);

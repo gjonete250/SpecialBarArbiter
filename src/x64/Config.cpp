@@ -1,6 +1,45 @@
 #include "PCH.h"
 #include "Config.h"
 
+namespace
+{
+    // Отрезает пробелы и табы по краям (защита от опечаток в ini).
+    std::string TrimAscii(const std::string& a_s)
+    {
+        std::size_t b = 0;
+        std::size_t e = a_s.size();
+        while (b < e && (a_s[b] == ' ' || a_s[b] == '\t')) ++b;
+        while (e > b && (a_s[e - 1] == ' ' || a_s[e - 1] == '\t')) --e;
+        return a_s.substr(b, e - b);
+    }
+
+    // Убирает хвостовое ".dll" без учёта регистра ("ValhallaCombat.dll" -> "ValhallaCombat").
+    void StripDllSuffix(std::string& a_name)
+    {
+        if (a_name.size() >= 4) {
+            auto tail = a_name.substr(a_name.size() - 4);
+            for (auto& c : tail) {
+                if (c >= 'A' && c <= 'Z') c = static_cast<char>(c - 'A' + 'a');
+            }
+            if (tail == ".dll") a_name.erase(a_name.size() - 4);
+        }
+    }
+
+    // ВАЖНО: конвертируем БЕЗ флага -1, иначе в результат попадает хвостовой '\0'.
+    // Именно этот встроенный '\0' был источником фантомного DENIED:
+    // 'ValhallaCombat\0' (14 символов) != 'valhallaCombat' (13 символов).
+    std::wstring ToWide(const std::string& a_narrow)
+    {
+        if (a_narrow.empty()) return {};
+        const int wlen = MultiByteToWideChar(
+            CP_UTF8, 0, a_narrow.c_str(), static_cast<int>(a_narrow.size()), nullptr, 0);
+        std::wstring wide(static_cast<std::size_t>(wlen), L'\0');
+        MultiByteToWideChar(
+            CP_UTF8, 0, a_narrow.c_str(), static_cast<int>(a_narrow.size()), wide.data(), wlen);
+        return wide;
+    }
+}
+
 namespace Arbiter::Config
 {
     Settings& GetSingleton()
@@ -12,22 +51,26 @@ namespace Arbiter::Config
     void Load()
     {
         auto& s = GetSingleton();
-        char  owner[MAX_PATH] = { 0 };
-        GetPrivateProfileStringA("General", "SpecialBarOwner", "", owner, MAX_PATH, "Data\\SKSE\\Plugins\\SpecialBarArbiter.ini");
-        s.verboseLog = GetPrivateProfileIntA("General", "VerboseLog", 1, "Data\\SKSE\\Plugins\\SpecialBarArbiter.ini") != 0;
+        constexpr const char* kIniPath = "Data\\SKSE\\Plugins\\SpecialBarArbiter.ini";
 
-        // "ValhallaCombat" / "ValhallaCombat.dll" -> L"ValhallaCombat"
-        std::string name(owner);
-        if (auto pos = name.rfind(".dll"); pos != std::string::npos) name.erase(pos);
-        s.specialBarOwner.clear();
-        const int wlen = MultiByteToWideChar(CP_UTF8, 0, name.c_str(), -1, nullptr, 0);
-        if (wlen > 1) {
-            std::wstring wname(wlen, L'\0');
-            MultiByteToWideChar(CP_UTF8, 0, name.c_str(), -1, wname.data(), wlen);
-            s.specialBarOwner = wname;
-        }
-        logger::info("[SBA] SpecialBarOwner = '{}', VerboseLog = {}",
-                     name.empty() ? "<empty: pass-through mode>" : name, s.verboseLog);
+        char buf[MAX_PATH] = { 0 };
+
+        GetPrivateProfileStringA("General", "SpecialBarOwner", "", buf, MAX_PATH, kIniPath);
+        std::string barOwner = TrimAscii(buf);
+        StripDllSuffix(barOwner);
+        s.specialBarOwner = ToWide(barOwner);
+
+        GetPrivateProfileStringA("TargetControl", "TargetControlOwner", "", buf, MAX_PATH, kIniPath);
+        std::string targetOwner = TrimAscii(buf);
+        StripDllSuffix(targetOwner);
+        s.targetControlOwner = ToWide(targetOwner);
+
+        s.verboseLog = GetPrivateProfileIntA("General", "VerboseLog", 1, kIniPath) != 0;
+
+        logger::info("[SBA] SpecialBarOwner = '{}', TargetControlOwner = '{}', VerboseLog = {}",
+                     barOwner.empty() ? "<empty: pass-through mode>" : barOwner,
+                     targetOwner.empty() ? "<empty: pass-through mode>" : targetOwner,
+                     s.verboseLog);
     }
 
     std::wstring GetCallerModuleName(const void* a_returnAddress)
@@ -59,13 +102,25 @@ namespace Arbiter::Config
 
     bool IsCallerOwner(const void* a_returnAddress, std::wstring* a_callerModuleOut)
     {
-        auto&  s     = GetSingleton();
-        auto   caller = GetCallerModuleName(a_returnAddress);
+        auto& s     = GetSingleton();
+        auto  caller = GetCallerModuleName(a_returnAddress);
         if (a_callerModuleOut) *a_callerModuleOut = caller;
 
         // Пустой владелец в конфиге -> режим "прозрачного прохода" (никого не ограничиваем)
         if (s.specialBarOwner.empty()) return true;
 
         return IEquals(caller, s.specialBarOwner);
+    }
+
+    bool IsCallerTargetControlOwner(const void* a_returnAddress, std::wstring* a_callerModuleOut)
+    {
+        auto& s     = GetSingleton();
+        auto  caller = GetCallerModuleName(a_returnAddress);
+        if (a_callerModuleOut) *a_callerModuleOut = caller;
+
+        // Пустой владелец target control -> прозрачный проход (TDM получает control без ограничений)
+        if (s.targetControlOwner.empty()) return true;
+
+        return IEquals(caller, s.targetControlOwner);
     }
 }

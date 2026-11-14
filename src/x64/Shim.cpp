@@ -51,15 +51,15 @@ namespace Arbiter
     {
         const void* caller = _ReturnAddress();
         std::wstring callerModule;
-        if (Config::IsCallerOwner(caller, &callerModule)) {
+        if (Config::IsCallerTargetControlOwner(caller, &callerModule)) {
             auto r = _real->RequestTargetControl(a_myPluginHandle);
             logger::info("[SBA] RequestTargetControl({}) from '{}' -> OK forwarding",
                          a_myPluginHandle, std::string(callerModule.begin(), callerModule.end()));
             return r;
         }
-        logger::info("[SBA] RequestTargetControl DENIED to '{}' (owner is '{}')",
+        logger::info("[SBA] RequestTargetControl DENIED to '{}' (target owner is '{}')",
                      std::string(callerModule.begin(), callerModule.end()),
-                     std::string(Config::GetSingleton().specialBarOwner.begin(), Config::GetSingleton().specialBarOwner.end()));
+                     std::string(Config::GetSingleton().targetControlOwner.begin(), Config::GetSingleton().targetControlOwner.end()));
         return APIResult::AlreadyTaken;
     }
 
@@ -87,7 +87,7 @@ namespace Arbiter
     APIResult SpecialBarShim::SetTarget(SKSE::PluginHandle a_myPluginHandle, RE::ActorHandle a_actorHandle) noexcept
     {
         const void* caller = _ReturnAddress();
-        if (Config::IsCallerOwner(caller))
+        if (Config::IsCallerTargetControlOwner(caller))
             return _real->SetTarget(a_myPluginHandle, a_actorHandle);
         return APIResult::NotOwner;
     }
@@ -95,7 +95,7 @@ namespace Arbiter
     APIResult SpecialBarShim::SetSoftTarget(SKSE::PluginHandle a_myPluginHandle, RE::ActorHandle a_actorHandle) noexcept
     {
         const void* caller = _ReturnAddress();
-        if (Config::IsCallerOwner(caller))
+        if (Config::IsCallerTargetControlOwner(caller))
             return _real->SetSoftTarget(a_myPluginHandle, a_actorHandle);
         return APIResult::NotOwner;
     }
@@ -274,9 +274,9 @@ namespace Arbiter
         _real->DrawHalfCircle(a_center, a_x, a_y, a_radius, a_segments, a_duration, a_color, a_thickness);
     }
 
-    void SpecialBarShim::DrawSphere(const RE::NiPoint3& a_origin, float a_radius, std::uint32_t a_segments, float a_duration, std::uint32_t a_color, float a_thickness) noexcept
+    void SpecialBarShim::DrawSphere(const RE::NiPoint3& a_origin, float a_radius, std::uint32_t a_segments, float a_duration, std::uint32_t a_color) noexcept
     {
-        _real->DrawSphere(a_origin, a_radius, a_segments, a_duration, a_color, a_thickness);
+        _real->DrawSphere(a_origin, a_radius, a_segments, a_duration, a_color);
     }
 
     void SpecialBarShim::DrawCylinder(const RE::NiPoint3& a_start, const RE::NiPoint3& a_end, float a_radius, std::uint32_t a_segments, float a_duration, std::uint32_t a_color, float a_thickness) noexcept
