@@ -36,7 +36,7 @@ namespace Arbiter
         }
 
         logger::info("[SBA] RequestPluginAPI(v{}) from '{}' -> shim",
-                     static_cast<int>(a_version), callerModule.empty() ? "<unknown>" : std::string(callerModule.begin(), callerModule.end()));
+                     static_cast<int>(a_version), std::string(callerModule.begin(), callerModule.end()));
         return GetSingleton();
     }
 
@@ -274,24 +274,24 @@ namespace Arbiter
         _real->DrawHalfCircle(a_center, a_x, a_y, a_radius, a_segments, a_duration, a_color, a_thickness);
     }
 
-    void SpecialBarShim::DrawSphere(const RE::NiPoint3& a_origin, float a_radius, std::uint32_t a_segments, float a_duration, std::uint32_t a_color) noexcept
+    void SpecialBarShim::DrawSphere(const RE::NiPoint3& a_origin, float a_radius, std::uint32_t a_segments, float a_duration, std::uint32_t a_color, float a_thickness) noexcept
     {
-        _real->DrawSphere(a_origin, a_radius, a_segments, a_duration, a_color);
+        _real->DrawSphere(a_origin, a_radius, a_segments, a_duration, a_color, a_thickness);
     }
 
-    void SpecialBarShim::DrawCylinder(const RE::NiPoint3& a_start, const RE::NiPoint3& a_end, float a_radius, std::uint32_t a_segments, float a_duration, std::uint32_t a_color) noexcept
+    void SpecialBarShim::DrawCylinder(const RE::NiPoint3& a_start, const RE::NiPoint3& a_end, float a_radius, std::uint32_t a_segments, float a_duration, std::uint32_t a_color, float a_thickness) noexcept
     {
-        _real->DrawCylinder(a_start, a_end, a_radius, a_segments, a_duration, a_color);
+        _real->DrawCylinder(a_start, a_end, a_radius, a_segments, a_duration, a_color, a_thickness);
     }
 
-    void SpecialBarShim::DrawCone(const RE::NiPoint3& a_origin, const RE::NiPoint3& a_direction, float a_length, float a_angleWidth, float a_angleHeight, std::uint32_t a_segments, float a_duration, std::uint32_t a_color) noexcept
+    void SpecialBarShim::DrawCone(const RE::NiPoint3& a_origin, const RE::NiPoint3& a_direction, float a_length, float a_angleWidth, float a_angleHeight, std::uint32_t a_segments, float a_duration, std::uint32_t a_color, float a_thickness) noexcept
     {
-        _real->DrawCone(a_origin, a_direction, a_length, a_angleWidth, a_angleHeight, a_segments, a_duration, a_color);
+        _real->DrawCone(a_origin, a_direction, a_length, a_angleWidth, a_angleHeight, a_segments, a_duration, a_color, a_thickness);
     }
 
-    void SpecialBarShim::DrawCapsule(const RE::NiPoint3& a_center, const RE::NiPoint3& a_extent, const RE::NiQuaternion& a_rotation, float a_duration, std::uint32_t a_color, float a_thickness) noexcept
+    void SpecialBarShim::DrawCapsule(const RE::NiPoint3& a_origin, float a_halfHeight, float a_radius, const RE::NiQuaternion& a_rotation, float a_duration, std::uint32_t a_color, float a_thickness) noexcept
     {
-        _real->DrawCapsule(a_center, a_extent, a_rotation, a_duration, a_color, a_thickness);
+        _real->DrawCapsule(a_origin, a_halfHeight, a_radius, a_rotation, a_duration, a_color, a_thickness);
     }
 
     bool SpecialBarShim::HasInfoBar(RE::ActorHandle a_actorHandle, bool a_bFloatingOnly) const noexcept
