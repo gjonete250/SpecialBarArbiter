@@ -274,9 +274,9 @@ namespace Arbiter
         _real->DrawHalfCircle(a_center, a_x, a_y, a_radius, a_segments, a_duration, a_color, a_thickness);
     }
 
-    void SpecialBarShim::DrawSphere(const RE::NiPoint3& a_origin, float a_radius, std::uint32_t a_segments, float a_duration, std::uint32_t a_color) noexcept
+    void SpecialBarShim::DrawSphere(const RE::NiPoint3& a_origin, float a_radius, std::uint32_t a_segments, float a_duration, std::uint32_t a_color, float a_thickness) noexcept
     {
-        _real->DrawSphere(a_origin, a_radius, a_segments, a_duration, a_color);
+        _real->DrawSphere(a_origin, a_radius, a_segments, a_duration, a_color, a_thickness);
     }
 
     void SpecialBarShim::DrawCylinder(const RE::NiPoint3& a_start, const RE::NiPoint3& a_end, float a_radius, std::uint32_t a_segments, float a_duration, std::uint32_t a_color, float a_thickness) noexcept
