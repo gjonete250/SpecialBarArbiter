@@ -1,5 +1,10 @@
 # Special Bar Arbiter (SBA) v0.1 — «Миротворец»
 
+<p align="center">
+  <img src="banner.svg" alt="Special Bar Arbiter" width="100%"/>
+</p>
+
+
 Автор: **gjonete** — я люблю Skyrim с модами 🙂
 SKSE-плагин, который прекращает войну комбо-модов за спец-полоски TrueHUD.
 

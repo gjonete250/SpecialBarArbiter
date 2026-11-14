@@ -1,5 +1,10 @@
 # Special Bar Arbiter (SBA) v0.1 — "The Peacemaker"
 
+<p align="center">
+  <img src="banner.svg" alt="Special Bar Arbiter" width="100%"/>
+</p>
+
+
 Author: **gjonete** — I love Skyrim with mods 🙂
 An SKSE plugin that ends the war between combat mods fighting over
 TrueHUD's special bars.
