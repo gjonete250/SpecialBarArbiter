@@ -1,7 +1,7 @@
 # Special Bar Arbiter (SBA) v0.1 — "The Peacemaker"
 
 <p align="center">
-  <img src="banner.svg" alt="Special Bar Arbiter" width="100%"/>
+  <img src="banner_en.svg" alt="Special Bar Arbiter" width="100%"/>
 </p>
 
 
