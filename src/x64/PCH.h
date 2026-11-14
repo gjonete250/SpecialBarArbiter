@@ -1,27 +1,16 @@
 #pragma once
 
-// ---------- Стандартная библиотека (CommonLib ожидает их в предвключении) ----------
-#include <algorithm>
-#include <cstdint>
-#include <cstdio>
-#include <functional>
-#include <map>
-#include <memory>
-#include <optional>
-#include <span>
-#include <string>
-#include <string_view>
-#include <type_traits>
-#include <utility>
-#include <vector>
-
-// ---------- Win32 (ДО CommonLib: IMAGE_SCN_*, HANDLE и прочее) ----------
+// ---------- Win32 ----------
 #include <Windows.h>
 
 // ---------- spdlog ----------
 #include <spdlog/sinks/basic_file_sink.h>
 
-// ---------- CommonLibSSE-NG ----------
+// ---------- Полный прелюд CommonLibSSE-NG ----------
+// (std-литералы, пространство REL, stl-алиасы, базовые типы RE — всё в верном порядке)
+#include "SKSE/Impl/PCH.h"
+
+// ---------- То, что нам нужно сверх прелюда ----------
 #include "RE/A/Actor.h"
 #include "RE/A/ActorValue.h"
 #include "RE/G/GFxMovieView.h"
@@ -34,5 +23,5 @@
 // ---------- intrinsics (_ReturnAddress) ----------
 #include <intrin.h>
 
-// ---------- TrueHUD API (скачивается при сборке: cmake/VendorTrueHUDAPI.cmake) ----------
+// ---------- TrueHUD API (скачивается при сборке) ----------
 #include "API/TrueHUDAPI.h"
