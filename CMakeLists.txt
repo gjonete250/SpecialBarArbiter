@@ -1,11 +1,14 @@
 cmake_minimum_required(VERSION 3.22)
 project(SpecialBarArbiter VERSION 0.1.0 LANGUAGES CXX)
 
-# Скачиваем аутентичный хедер TrueHUD API до поиска библиотеки
+# Скачиваем аутентичный хедер TrueHUD API до поиска библиотек
 include(cmake/VendorTrueHUDAPI.cmake)
 
 find_package(CommonLibSSE CONFIG REQUIRED)
-find_package(Microsoft.Detours CONFIG REQUIRED)
+
+# Detours подключается через find_path/find_library (у порта нет CMake-конфига)
+find_path(DETOURS_INCLUDE_DIRS "detours/detours.h")
+find_library(DETOURS_LIBRARY detours REQUIRED)
 
 add_commonlibsse_plugin(
     SpecialBarArbiter
@@ -17,12 +20,13 @@ add_commonlibsse_plugin(
 )
 
 target_compile_features(SpecialBarArbiter PRIVATE cxx_std_23)
-target_link_libraries(SpecialBarArbiter PRIVATE Microsoft.Detours::Detours)
-target_compile_options(SpecialBarArbiter PRIVATE
-    /utf-8
-    "/FI${CMAKE_CURRENT_SOURCE_DIR}/src/x64/PCH.h"
-)
+target_link_libraries(SpecialBarArbiter PRIVATE ${DETOURS_LIBRARY})
 target_include_directories(SpecialBarArbiter PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/x64
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${DETOURS_INCLUDE_DIRS}
+)
+target_compile_options(SpecialBarArbiter PRIVATE
+    /utf-8
+    "/FI${CMAKE_CURRENT_SOURCE_DIR}/src/x64/PCH.h"
 )
