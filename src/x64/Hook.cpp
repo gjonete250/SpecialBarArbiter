@@ -2,7 +2,7 @@
 #include "Hook.h"
 #include "Shim.h"
 
-#include <detours.h>
+#include <detours/detours.h>
 
 namespace Arbiter::Hook
 {
