@@ -5,6 +5,7 @@ project(SpecialBarArbiter VERSION 0.1.0 LANGUAGES CXX)
 include(cmake/VendorTrueHUDAPI.cmake)
 
 find_package(CommonLibSSE CONFIG REQUIRED)
+find_package(Microsoft.Detours CONFIG REQUIRED)
 
 add_commonlibsse_plugin(
     SpecialBarArbiter
@@ -16,6 +17,7 @@ add_commonlibsse_plugin(
 )
 
 target_compile_features(SpecialBarArbiter PRIVATE cxx_std_23)
+target_link_libraries(SpecialBarArbiter PRIVATE Microsoft.Detours::Detours)
 target_compile_options(SpecialBarArbiter PRIVATE
     /utf-8
     "/FI${CMAKE_CURRENT_SOURCE_DIR}/src/x64/PCH.h"
