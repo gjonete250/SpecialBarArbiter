@@ -56,10 +56,10 @@ namespace Arbiter
         void DrawBox(const RE::NiPoint3& a_center, const RE::NiPoint3& a_extent, const RE::NiQuaternion& a_rotation, float a_duration = 0.f, std::uint32_t a_color = 0xFF0000FF, float a_thickness = 1.f) noexcept override;
         void DrawCircle(const RE::NiPoint3& a_center, const RE::NiPoint3& a_x, const RE::NiPoint3& a_y, float a_radius, std::uint32_t a_segments, float a_duration = 0.f, std::uint32_t a_color = 0xFF0000FF, float a_thickness = 1.f) noexcept override;
         void DrawHalfCircle(const RE::NiPoint3& a_center, const RE::NiPoint3& a_x, const RE::NiPoint3& a_y, float a_radius, std::uint32_t a_segments, float a_duration = 0.f, std::uint32_t a_color = 0xFF0000FF, float a_thickness = 1.f) noexcept override;
-        void DrawSphere(const RE::NiPoint3& a_origin, float a_radius, std::uint32_t a_segments = 16, float a_duration = 0.f, std::uint32_t a_color = 0xFF0000FF) noexcept override;
-        void DrawCylinder(const RE::NiPoint3& a_start, const RE::NiPoint3& a_end, float a_radius, std::uint32_t a_segments, float a_duration = 0.f, std::uint32_t a_color = 0xFF0000FF) noexcept override;
-        void DrawCone(const RE::NiPoint3& a_origin, const RE::NiPoint3& a_direction, float a_length, float a_angleWidth, float a_angleHeight, std::uint32_t a_segments, float a_duration = 0.f, std::uint32_t a_color = 0xFF0000FF) noexcept override;
-        void DrawCapsule(const RE::NiPoint3& a_center, const RE::NiPoint3& a_extent, const RE::NiQuaternion& a_rotation, float a_duration = 0.f, std::uint32_t a_color = 0xFF0000FF, float a_thickness = 1.f) noexcept override;
+        void DrawSphere(const RE::NiPoint3& a_origin, float a_radius, std::uint32_t a_segments, float a_duration, std::uint32_t a_color, float a_thickness) noexcept override;
+        void DrawCylinder(const RE::NiPoint3& a_start, const RE::NiPoint3& a_end, float a_radius, std::uint32_t a_segments, float a_duration, std::uint32_t a_color, float a_thickness) noexcept override;
+        void DrawCone(const RE::NiPoint3& a_origin, const RE::NiPoint3& a_direction, float a_length, float a_angleWidth, float a_angleHeight, std::uint32_t a_segments, float a_duration, std::uint32_t a_color, float a_thickness) noexcept override;
+        void DrawCapsule(const RE::NiPoint3& a_origin, float a_halfHeight, float a_radius, const RE::NiQuaternion& a_rotation, float a_duration, std::uint32_t a_color, float a_thickness) noexcept override;
         [[nodiscard]] bool HasInfoBar(RE::ActorHandle a_actorHandle, bool a_bFloatingOnly = false) const noexcept override;
 
         // IVTrueHUD4
