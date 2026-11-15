@@ -87,9 +87,8 @@ namespace Arbiter::Config
                 result = path;
                 if (auto pos = result.find_last_of(L'\\'); pos != std::wstring::npos) result.erase(0, pos + 1);
                 // убираем .dll для удобства сравнения (без учёта регистра)
-                if (auto pos = result.rfind(L".dll"); pos == std::wstring::npos) {
-                    pos = result.rfind(L".DLL");
-                }
+                auto pos = result.rfind(L".dll");
+                if (pos == std::wstring::npos) pos = result.rfind(L".DLL");
                 if (pos != std::wstring::npos) result.erase(pos);
             }
         }
