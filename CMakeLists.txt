@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(SpecialBarArbiter VERSION 0.1.1 LANGUAGES CXX)
+project(SpecialBarArbiter VERSION 0.1.2 LANGUAGES CXX)
 
 # Скачиваем аутентичный хедер TrueHUD API до поиска библиотек
 include(cmake/VendorTrueHUDAPI.cmake)

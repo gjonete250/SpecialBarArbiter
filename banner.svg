@@ -1,86 +1,67 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-label="Special Bar Arbiter banner">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-label="Special Bar Arbiter v0.1.2">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"  stop-color="#0d1117"/>
-      <stop offset="55%" stop-color="#101a2b"/>
-      <stop offset="100%" stop-color="#161c2e"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1b1035"/>
+      <stop offset="0.55" stop-color="#2a1855"/>
+      <stop offset="1" stop-color="#41207a"/>
     </linearGradient>
-    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"  stop-color="#58c4dd"/>
-      <stop offset="50%" stop-color="#7c6cff"/>
-      <stop offset="100%" stop-color="#c964ff"/>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8b5cf6"/>
+      <stop offset="0.5" stop-color="#c084fc"/>
+      <stop offset="1" stop-color="#38bdf8"/>
     </linearGradient>
-    <linearGradient id="bar" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"  stop-color="#4ae3b5"/>
-      <stop offset="100%" stop-color="#ffb454"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="50%" cy="42%" r="65%">
-      <stop offset="0%"  stop-color="#2b3d6b" stop-opacity="0.85"/>
-      <stop offset="100%" stop-color="#0d1117" stop-opacity="0"/>
+    <radialGradient id="glow" cx="0.5" cy="0.4" r="0.75">
+      <stop offset="0" stop-color="#7c3aed" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
     </radialGradient>
   </defs>
 
-  <!-- background -->
-  <rect width="1200" height="320" fill="url(#bg)"/>
-  <rect width="1200" height="320" fill="url(#glow)"/>
+  <rect width="1200" height="300" fill="url(#bg)"/>
+  <rect width="1200" height="300" fill="url(#glow)"/>
 
-  <!-- subtle grid -->
-  <g stroke="#ffffff" stroke-opacity="0.045" stroke-width="1">
-    <path d="M0 80 H1200 M0 160 H1200 M0 240 H1200"/>
-    <path d="M150 0 V320 M300 0 V320 M450 0 V320 M600 0 V320 M750 0 V320 M900 0 V320 M1050 0 V320"/>
+  <!-- декоративные полоски-ресурсы -->
+  <g opacity="0.85">
+    <rect x="60"  y="52"  width="120" height="10" rx="5" fill="#38bdf8" opacity="0.25"/>
+    <rect x="60"  y="52"  width="84"  height="10" rx="5" fill="#38bdf8"/>
+    <rect x="60"  y="70"  width="120" height="10" rx="5" fill="#34d399" opacity="0.25"/>
+    <rect x="60"  y="70"  width="110" height="10" rx="5" fill="#34d399"/>
+    <rect x="60"  y="88"  width="120" height="10" rx="5" fill="#c084fc" opacity="0.25"/>
+    <rect x="60"  y="88"  width="60"  height="10" rx="5" fill="#c084fc"/>
+  </g>
+  <g opacity="0.85" transform="translate(1140,0) scale(-1,1)">
+    <rect x="0" y="52" width="120" height="10" rx="5" fill="#38bdf8" opacity="0.25" transform="translate(-120,0)"/>
+    <rect x="36" y="52" width="84" height="10" rx="5" fill="#38bdf8"/>
+    <rect x="0" y="70" width="120" height="10" rx="5" fill="#34d399" opacity="0.25" transform="translate(-120,0)"/>
+    <rect x="10" y="70" width="110" height="10" rx="5" fill="#34d399"/>
+    <rect x="0" y="88" width="120" height="10" rx="5" fill="#c084fc" opacity="0.25" transform="translate(-120,0)"/>
+    <rect x="60" y="88" width="60" height="10" rx="5" fill="#c084fc"/>
   </g>
 
-  <!-- title -->
-  <text x="600" y="118" text-anchor="middle"
-        font-family="Segoe UI, Arial, sans-serif" font-size="58" font-weight="700"
-        letter-spacing="6" fill="url(#accent)">SPECIAL BAR ARBITER</text>
+  <!-- название -->
+  <text x="600" y="128" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="52" font-weight="800" letter-spacing="6" fill="#f5f3ff">SPECIAL BAR ARBITER</text>
+  <text x="600" y="168" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#c4b5fd">«Миротворец · Bouncer» для TrueHUD · SKSE Plugin · Skyrim 1.6.1170+</text>
 
-  <!-- subtitle -->
-  <text x="600" y="162" text-anchor="middle"
-        font-family="Segoe UI, Arial, sans-serif" font-size="21"
-        letter-spacing="2" fill="#9fb0c9">«Миротворец» для TrueHUD · SKSE Plugin · Skyrim 1.6.1170+</text>
+  <!-- разделитель -->
+  <rect x="340" y="188" width="520" height="3" rx="1.5" fill="url(#accent)"/>
 
-  <!-- the special bar artwork -->
-  <g>
-    <!-- health bar hint (dimmed) -->
-    <rect x="470" y="200" width="260" height="12" rx="6" fill="#232a3a"/>
-    <rect x="470" y="200" width="200" height="12" rx="6" fill="#3a4560"/>
-    <!-- special bar (the hero) -->
-    <rect x="440" y="222" width="320" height="18" rx="9" fill="#11151f" stroke="#7c6cff" stroke-opacity="0.65" stroke-width="2"/>
-    <rect x="443" y="225" width="236" height="12" rx="6" fill="url(#bar)"/>
-    <!-- bar glints -->
-    <circle cx="679" cy="231" r="4" fill="#ffe9c2"/>
-    <!-- caption -->
-    <text x="600" y="266" text-anchor="middle"
-          font-family="Segoe UI, Arial, sans-serif" font-size="14"
-          letter-spacing="3" fill="#7e8ca6">ONE BAR · MANY MODS · ZERO CRASHES</text>
-  </g>
+  <!-- слоган -->
+  <text x="600" y="224" text-anchor="middle" font-family="Consolas, monospace" font-size="18" letter-spacing="3" fill="#a5b4fc">ONE BAR · MANY MODS · ZERO CRASHES</text>
 
-  <!-- badges -->
-  <g font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">
-    <g>
-      <rect x="382" y="286" width="90" height="24" rx="12" fill="#1d2b45" stroke="#3b4a68"/>
-      <text x="427" y="302" text-anchor="middle" fill="#9fe6c9">v0.1</text>
-    </g>
-    <g>
-      <rect x="480" y="286" width="106" height="24" rx="12" fill="#1d2b45" stroke="#3b4a68"/>
-      <text x="533" y="302" text-anchor="middle" fill="#c9b8ff">SKSE · CLibNG</text>
-    </g>
-    <g>
-      <rect x="594" y="286" width="90" height="24" rx="12" fill="#1d2b45" stroke="#3b4a68"/>
-      <text x="639" y="302" text-anchor="middle" fill="#ffd9a1">MIT</text>
-    </g>
-    <g>
-      <rect x="692" y="286" width="126" height="24" rx="12" fill="#1d2b45" stroke="#3b4a68"/>
-      <text x="755" y="302" text-anchor="middle" fill="#9fd4ff">by gjonete</text>
-    </g>
-  </g>
+  <!-- бейджи -->
+  <g font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" text-anchor="middle">
+    <rect x="286" y="246" width="92"  height="30" rx="15" fill="#7c3aed"/>
+    <text x="332" y="266" fill="#ffffff">v0.1.2</text>
 
-  <!-- corner accents -->
-  <g stroke="url(#accent)" stroke-width="3" fill="none" stroke-linecap="round">
-    <path d="M28 36 v-14 h14"/>
-    <path d="M1172 36 v-14 h-14"/>
-    <path d="M28 284 v14 h14"/>
-    <path d="M1172 284 v14 h-14"/>
+    <rect x="392" y="246" width="140" height="30" rx="15" fill="#312e81"/>
+    <text x="462" y="266" fill="#c7d2fe">SKSE · CLibNG</text>
+
+    <rect x="546" y="246" width="80"  height="30" rx="15" fill="#312e81"/>
+    <text x="586" y="266" fill="#c7d2fe">MIT</text>
+
+    <rect x="640" y="246" width="130" height="30" rx="15" fill="#312e81"/>
+    <text x="705" y="266" fill="#c7d2fe">by gjonete</text>
+
+    <rect x="784" y="246" width="150" height="30" rx="15" fill="#065f46"/>
+    <text x="859" y="266" fill="#a7f3d0">battle-tested ⚔️</text>
   </g>
 </svg>

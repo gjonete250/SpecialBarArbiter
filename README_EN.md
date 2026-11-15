@@ -1,4 +1,4 @@
-# Special Bar Arbiter (SBA) v0.1 — "The Peacemaker"
+# Special Bar Arbiter (SBA) v0.1.2 — "The Peacemaker / Bouncer"
 
 <p align="center">
   <img src="banner_en.svg" alt="Special Bar Arbiter" width="100%"/>
@@ -19,10 +19,35 @@ health) to exactly ONE plugin — first come, first served. As a result:
 - whichever mod loses the race triggers a `std::bad_function_call`
   crash inside TrueHUD.dll.
 
-Arbiter intercepts API hand-out and grants the bars only to the owner
-defined in the config; everyone else receives a polite refusal.
-Unowned "flash the bar" calls are safely ignored. The crash becomes
-technically impossible.
+Arbiter intercepts API hand-out (Microsoft Detours) and grants the bars
+only to the owner defined in the config; everyone else receives a polite
+refusal. Unowned "flash the bar" calls are safely ignored. The crash
+becomes technically impossible.
+
+As of v0.1.2, the hook is installed **before everyone else**: a watcher
+thread catches the moment TrueHUD.dll appears in memory — before the
+first `kPostLoad` dispatch. Even mods that receive messages earlier in
+the load order can no longer bypass the shim.
+
+## 🏆 Battle-tested (field reports)
+
+The plugin survived live testing on a real modlist (Wabbajack, 228
+SKSE plugins):
+
+- **Valhalla owns the bars**: `RequestSpecialResourceBarsControl from
+  'valhallaCombat' -> forwarded, result=0` — session after session;
+- **TDM is back**: `RequestTargetControl from 'TrueDirectionalMovement'
+  -> OK forwarding` — target control works out of the box;
+- **Peaceful coexistence**: Chocolate Poise (poise system) lives next to
+  ValhallaCombat without fighting over the bars;
+- **13+ minutes of continuous combat with zero crashes** — where the
+  game used to die with `std::bad_function_call` before installing SBA;
+- **Enemy investigation**: using SBA logs, a rival mod that bypassed the
+  shim (pre-v0.1.2) was identified, and a third-party mod bug (Elden
+  Parry) was documented and reported to its authors.
+
+4 clients caught and served: TrueDirectionalMovement, valhallaCombat,
+SkyParkourNG, BetterThirdPersonSelection.
 
 ## Installation (ready-made DLL)
 
@@ -41,21 +66,32 @@ forward-compatible).
 
 ```ini
 [General]
-; DLL name of the plugin allowed to own the special bars (case-insensitive)
+; DLL name of the plugin allowed to own the special bars (case-insensitive,
+; .dll suffix optional)
 SpecialBarOwner=ValhallaCombat
-; 1 = verbose log of every API request
+; 1 = verbose log of every API request (off by default)
 VerboseLog=1
+
+[TargetControl]
+; DLL name of the target-control owner (True Directional Movement etc.)
+; Empty = transparent pass-through: any mod gets control
+TargetControlOwner=
 ```
 
 An empty `SpecialBarOwner` = transparent mode (no restrictions).
+Leading/trailing spaces are ignored; the `.dll` suffix is optional.
 
 ## Verifying it works
 
 Log file: `Documents\My Games\Skyrim Special Edition\SKSE\SpecialBarArbiter.log`
 
 - `Hook installed on TrueHUD.dll!RequestPluginAPI` — the hook is active;
-- `RequestSpecialResourceBarsControl DENIED to '...'` — which mod asked
-  for the bars and was refused;
+- `RequestSpecialResourceBarsControl(...) from '...' -> forwarded, result=0`
+  — the owner received the bars;
+- `RequestTargetControl(...) from 'TrueDirectionalMovement' -> OK forwarding`
+  — TDM controls the target;
+- `RequestSpecialResourceBarsControl DENIED to '...'` — a foreign mod was
+  politely refused;
 - `FlashActorValue swallowed ... crash prevented` — a prevented crash.
 
 ## Building from source
