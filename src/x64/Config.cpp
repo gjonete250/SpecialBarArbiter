@@ -65,7 +65,8 @@ namespace Arbiter::Config
         StripDllSuffix(targetOwner);
         s.targetControlOwner = ToWide(targetOwner);
 
-        s.verboseLog = GetPrivateProfileIntA("General", "VerboseLog", 1, kIniPath) != 0;
+        // v0.1.2: подробный лог по умолчанию выключен — для релиза тише и быстрее.
+        s.verboseLog = GetPrivateProfileIntA("General", "VerboseLog", 0, kIniPath) != 0;
 
         logger::info("[SBA] SpecialBarOwner = '{}', TargetControlOwner = '{}', VerboseLog = {}",
                      barOwner.empty() ? "<empty: pass-through mode>" : barOwner,
@@ -85,8 +86,11 @@ namespace Arbiter::Config
             if (GetModuleFileNameW(hModule, path, MAX_PATH)) {
                 result = path;
                 if (auto pos = result.find_last_of(L'\\'); pos != std::wstring::npos) result.erase(0, pos + 1);
-                // убираем .dll для удобства сравнения
-                if (auto pos = result.rfind(L".dll"); pos != std::wstring::npos) result.erase(pos);
+                // убираем .dll для удобства сравнения (без учёта регистра)
+                if (auto pos = result.rfind(L".dll"); pos == std::wstring::npos) {
+                    pos = result.rfind(L".DLL");
+                }
+                if (pos != std::wstring::npos) result.erase(pos);
             }
         }
         return result;
